@@ -33,5 +33,6 @@ for str in corpus:
 			else:
 				print('Error')
 		else:
-			newDataFile.write(word.lower()+' ')
+			if not word.lower() in stopWords:
+				newDataFile.write(word.lower()+' ')
 	newDataFile.write('\n')
