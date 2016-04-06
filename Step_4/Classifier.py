@@ -1,3 +1,5 @@
+from math import log2
+
 class Classifier:
 	def __init__(self, trainingData, vocabulary):
 		self.wordsFreq = dict()
@@ -27,24 +29,24 @@ class Classifier:
 					self.classFreq[entry[0]].append(word)
 	
 	def getClass(self, string):
-		maxProb = -100
+		maxProb = float('-inf')
 		maxClass = ''
 		
 		for i in self.classCount:
-			prob = self.classCount[i]/(sum(self.classCount.values()))
+			logProb = log2(self.classCount[i])-log2(sum(self.classCount.values()))
 			# print(i)
 			for word in string.split():
 				if word in self.wordsFreq:
-					wordProb = (self.wordsFreq[word][i]+1)/(len(self.classFreq[i])+len(self.wordsFreq)+1)
+					wordLogProb = log2(self.wordsFreq[word][i]+1)-log2(len(self.classFreq[i])+len(self.wordsFreq)+1)
 				else:
-					wordProb = (1/(len(self.classFreq[i])+len(self.wordsFreq)+1))
-				prob = prob * wordProb
+					wordLogProb = -log2(len(self.classFreq[i])+len(self.wordsFreq)+1)
+				logProb += wordLogProb
 				# print('\t',word, wordProb)
 			
 			# print(prob,'\n****************')
 		
-			if prob > maxProb:
-				maxProb = prob
+			if logProb > maxProb:
+				maxProb = logProb
 				maxClass = i
 		
 		# print(maxProb)
