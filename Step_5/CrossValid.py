@@ -1,6 +1,8 @@
 from sys import path
 path.append('..')
 from Step_4.Classifier import Classifier
+import pickle
+
 
 vocabularyFile = open("../Step_3/vocabulary.txt", mode='r', encoding = 'utf-8')
 trainingFile = open("../Step_2/data.txt", mode='r', encoding = 'utf-8')
@@ -20,7 +22,13 @@ avgAccuracy = 0
 for i in range(10):
 	testSet = positiveData[i*posFactor:i*posFactor+posFactor] + negativeData[i*negFactor:i*negFactor+negFactor]
 	trainingSet = positiveData[:i*posFactor]+positiveData[i*posFactor+posFactor:]+negativeData[:i*negFactor]+negativeData[i*negFactor+negFactor:]
-	x = Classifier(trainingSet, vocabulary)
+	
+	try:
+		x = pickle.load(open("model"+str(i)+".pickle", "rb"))
+	except (OSError, IOError) as e:
+		x = Classifier(trainingSet, vocabulary)
+		pickle.dump(x, open("model"+str(i)+".pickle", "wb"))
+
 	right = 0
 	wrong = 0
 	for reviewItem in testSet:
