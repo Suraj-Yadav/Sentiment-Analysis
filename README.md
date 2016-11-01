@@ -1,6 +1,6 @@
 # Sentiment-Analysis
 User Reviews sentiment Analysis. 
-NLP project of Suraj and Ashok.
+NLP project of Suraj Yadav and Ashok Dhungana (Github profile link : https://github.com/ashlamp08).
 
 Avg Unigram Accuracy = 0.8733333333333334
 
